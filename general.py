@@ -15,9 +15,9 @@ def create_data_file(directory, url):
         create_file(directory, '')
 
 def create_file(directory, content):
-    f = open(directory, 'w')
-    f.write(content)
-    f.close
+    with open(directory, 'w') as f:
+        f.write(content)
+        f.close
 
 def append_to_file(path, data):
     with open(path, 'a') as file:
