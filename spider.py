@@ -1,4 +1,5 @@
 from urllib.request import urlopen
+from urllib.parse import urlparse
 from link_finder import LinkFinder
 from general import *
 
@@ -15,8 +16,8 @@ class Spider:
         Spider.project_name = project_name
         Spider.base_url = base_url
         Spider.domain_name = domain_name
-        Spider.queue_file = Spider.project_name + os.path.pathsep + 'queue.txt'
-        Spider.crawled_file = Spider.project_name + os.path.pathsep + 'crawled.txt'
+        Spider.queue_file = Spider.project_name + os.path.sep + 'queue.txt'
+        Spider.crawled_file = Spider.project_name + os.path.sep + 'crawled.txt'
         self.boot()
         self.crawl_page('First spider', Spider.base_url)
 
@@ -41,14 +42,15 @@ class Spider:
     def gather_link(page_url):
         html_string = ''
         try:
-            response = urlopen(page_url)
+            headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36'}
+            response = urlopen(urlparse(page_url).geturl())
             if response.getheader('Content-Type') == 'text/html':
                 html_bytes = response.read()
                 html_string = html_bytes.decode('utf-8')
             finder = LinkFinder(Spider.base_url, page_url)
             finder.feed(html_string)
-        except:
-            print(f'Error: cannot crawl page')
+        except Exception as e:
+            print(f'Error: cannot crawl page {e}')
             return set()
         return finder.page_links()
     

@@ -3,16 +3,16 @@ import os
 # create a folder for each project that would be crawled
 def create_project_dir(directory):
     if not os.path.exists(directory):
-        print('Crating project ' + directory)
+        print('Creating project ' + directory)
         os.makedirs(directory)
 
 def create_data_file(directory, url):
     queue = directory + os.path.sep + 'queue.txt'
     crawled = directory + os.path.sep + 'crawled.txt'
     if not os.path.exists(queue):
-        create_file(directory, url)
+        create_file(queue, url)
     if not os.path.exists(crawled):
-        create_file(directory, '')
+        create_file(crawled, '')
 
 def create_file(directory, content):
     with open(directory, 'w') as f:
